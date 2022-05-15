@@ -1,17 +1,23 @@
 {
-  "name": "pedbeer",
+  "name": "pedbeer-study",
   "version": "1.0.0",
-  "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Vinicius Tamura",
   "license": "ISC",
   "dependencies": {
     "@amcharts/amcharts5": "^5.2.3",
     "materialize-css": "^1.0.0-rc.2",
     "tabulator-tables": "^5.2.4"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vtamura/PedBeer-Study.git"
+  },
+  "description": ""
 }
