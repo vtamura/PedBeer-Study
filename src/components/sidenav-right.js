@@ -19,43 +19,61 @@ class SidenavRight extends HTMLElement {
     static get observedAttributes(){
         return []
     }
+
     connectedCallback(){
        this.render()
     }
+
     adoptedCallback() {
         console.log('o componente foi adotado por outro componenten parent')
-     }
+    }
+
     disconnectedCallback() {
         console.log('o componente foi removido DOM');
-     }
+    }
+
     attributeChangedCallback(name, oldVal, newVal) {
         /* if (oldVal !== newVal) {
         console.log('name changed from oldVal to newVal')
      } */
         this.render()
     }
+
     createCustomEvents(){
-        //this.nomeDoEventoCustomizado = new CustomEvent('nomeDoEventoCustomizado', {detail: {}});
-    };
+        this.downloadTable = new CustomEvent('downloadTable', {detail: {solicitante: this}})
+    }
+
     listenerEventsfromWindow(){
-        //window.addEventListener('nomeDoEventoCustomizadoEscutado', function (e) {});
+        window.addEventListener('openRightMenu', e => {
+            console.log('Ouvi Direita!')
+            this.sidenavInstance.open()
+        })
     }
     createAllinstances(){
-        //let elementIdElement = this.shadow.querySelector('#idelement')
-        //this.instanceIdElement = M.componenteMaterialize.init(elementIdElement, {});
+        const rightSidenav = this.shadow.querySelector('.sidenav')
+        this.sidenavInstance = M.Sidenav.init(rightSidenav, {edge: 'right'})
     }
+
     listenerEventsfromEscope(){
-        //let context = this
-        //let idcomponente = this.shadow.querySelector('#idcomponente')
-        //idcomponente.addEventListener('click',function(){window.dispatchEvent(context.nomeDoEventoCustomizado);})
+        const downloadBtn = this.shadow.querySelector('[data-download]')
+        downloadBtn.addEventListener('click', e => {
+            window.dispatchEvent(this.downloadTable)
+        })
     }
+
     render(){
         this.shadow.innerHTML = `
             <style>
-                /*@import 'CDN css';*/
+                @import "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css";
             </style>
+            <ul id="slide-out" class="sidenav">
+                <li><a class="subheader">Config</a></li>
+                <ul>
+                    <li><a data-download class="waves-effect" href="#!">Exportar Excel</a></li>
+                </ul>
+            </ul>
         `
-        
+
         this.createAllinstances()
         this.listenerEventsfromEscope()
     }

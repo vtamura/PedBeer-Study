@@ -3,7 +3,6 @@ class TopNavbar extends HTMLElement {
         super()
         this.createCustomEvents()
         this.listenerEventsfromWindow()
-        this.navbarTitle = 'Bem Vindo ao PebBeer!'
         this.shadow = this.attachShadow({mode:'open'});
     }
      static get observedAttributes() {
@@ -35,27 +34,36 @@ class TopNavbar extends HTMLElement {
     }
     createCustomEvents(){
         this.openLeftMenu = new CustomEvent('openLeftMenu', {detail: {solicitante: this}})
-    }
+        this.openRightMenu = new CustomEvent('openRightMenu', {detail: {solicitante: this}})
 
-    listenerEventsfromWindow(){
-        window.addEventListener('changeNavbarText', e => {
-            console.log(e)
-            this.navbarTitle = e.detail.text
-            this.render()
-        })
     }
-
+    
     createAllinstances(){
         //let elementIdElement = this.shadow.querySelector('#idelement')
         //this.instanceIdElement = M.componenteMaterialize.init(elementIdElement, {});
     }
+
+    listenerEventsfromWindow(){
+        window.addEventListener('changeNavbarText', e => {
+            const title = this.shadow.querySelector('[data-title]')
+            title.textContent = e.detail.text
+        })
+    }
+
     listenerEventsfromEscope(){
         // let context = this
-        const btnMenuLeft = this.shadow.querySelector('[data-name="menu-left"]')
+        const btnMenuLeft = this.shadow.querySelector('#menu-left')
+        const btnMenuRight = this.shadow.querySelector('#menu-right')
 
         btnMenuLeft.addEventListener('click', e => {
             window.dispatchEvent(this.openLeftMenu)
-            console.log('Fui clicado! - Navbar')
+            console.log('Fui clicado! (esquerda) - Navbar')
+        })
+
+
+        btnMenuRight.addEventListener('click', e => {
+            window.dispatchEvent(this.openRightMenu)
+            console.log('Fui clicado! (direita) - Navbar')
         })
 
     }
@@ -63,12 +71,25 @@ class TopNavbar extends HTMLElement {
         this.shadow.innerHTML = `
             <style>
                 @import "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css";
-                .nav-wrapper {
-                    padding: 0 200px;
+                @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
+
+                #menu-left {
+                    margin-left: 100px !important;
                 }
-                ul li a {
+
+                .nav-wrapper {
+                    padding-left: 200px;
+                }
+                
+                .sidenav-trigger {
+                    color: black;
+                    margin: 0 !important;
+                }
+
+                ul li > a {
                     color: black;
                 }
+
                 .badge {
                     display: inline !important;
                     padding: 10px 16px !important;
@@ -77,22 +98,30 @@ class TopNavbar extends HTMLElement {
                 }
 
             </style>
+            
             <nav>
+                <a href="#" id="menu-left" data-target="slide-out" class="sidenav-trigger show-on-large">Menu</i></a>
                 <div class="nav-wrapper grey lighten-5 z-depth-0">
+    
                     <a href="#" class="brand-logo">
                         <span class="orange-text">Ped / </span><span class="black-text">Beer</span>
                     </a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
                         <li>
-                            <a><span class="badge orange">${this.navbarTitle}</span></a>
+                            <a><span data-title class="badge orange">Bem vindo ao PedBeer</span></a>
                         </li>
                         <li>
-                            <a href="#" data-name="menu-left" data-target="slide-out" class="sidenav-trigger show-on-large">
-                                Menu-left
+                            <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large">
+                                Link#01
                             </a>
                         </li>
                         <li>
-                            <a href="#" data-name="menu-right" data-target="slide-out" class="sidenav-trigger show-on-large">
+                            <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large">
+                                Link#02
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" id="menu-right" data-target="slide-out" class="sidenav-trigger show-on-large">
                                 Menu-Right
                             </a>
                         </li>
