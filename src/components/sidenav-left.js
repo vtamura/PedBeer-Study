@@ -39,14 +39,13 @@ class SidenavLeft extends HTMLElement {
     }
 
     createCustomEvents(){
+        this.getTable = new CustomEvent('getTable', {detail: {solicitante: this, table: ""}})
         this.changeNavbarText = new CustomEvent('changeNavbarText', {detail: {solicitante: this, text: ""}})
     }
 
     listenerEventsfromWindow(){
         window.addEventListener('openLeftMenu', e => {
-            console.log(e.detail)
             this.sidenavInstance.open()
-            console.log('Sidenav: Ouvi o evento!') 
         })
     }
 
@@ -60,57 +59,50 @@ class SidenavLeft extends HTMLElement {
     }
 
     listenerEventsfromEscope(){
-        //let context = this
-        //let idcomponente = this.shadow.querySelector('#idcomponente')
-        //idcomponente.addEventListener('click',function(){window.dispatchEvent(context.nomeDoEventoCustomizado);})
-        let collapsibleLinkText = this.shadow.querySelectorAll('[data-text]')
+        const menuBtnsTable = this.shadow.querySelectorAll('[data-sidenav-btn]')
 
-        collapsibleLinkText.forEach( link => {
-            link.addEventListener('click', e => {
-                this.changeNavbarText.detail.text = link.getAttribute('data-text')
+        menuBtnsTable.forEach( btnTable => {
+            btnTable.addEventListener('click', e => {
+                let cont = 0
+                this.getTable.detail.table = btnTable.getAttribute('data-table')
+                this.changeNavbarText.detail.text = btnTable.getAttribute('data-text')
+                window.dispatchEvent(this.getTable)
                 window.dispatchEvent(this.changeNavbarText)
+
+                while(cont < menuBtnsTable.length) {
+                    menuBtnsTable[cont++].className = ''
+                }
+
+                btnTable.className = 'active orange lighten-1'
             })
         })
-        
     }
     
     render(){
         this.shadow.innerHTML = `
             <style>
                 @import "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css";
+
+                waves-effect.active {
+
+                }
             </style>
 
             <ul id="slide-out" class="sidenav">
-                <li><a class="subheader">Some Links</a></li>
+                <li><a class="subheader">Tabelas</a></li>
                 
                 <ul class="collapsible collapsible-accordion">
                     <li>
-                        <a class="collapsible-header">Collapsible#01</a>
+                        <a class="collapsible-header">Pessoas</a>
                         <div class="collapsible-body">
                             <ul>
-                                <li><a data-text="Link 01 Clicado!" class="waves-effect" href="#!">Link#01</a></li>
-                                <li><a data-text="Link 02 Clicado!" class="waves-effect" href="#!">Link#02</a></li>
-                                <li><a data-text="Link 03 Clicado!" class="waves-effect" href="#!">Link#03</a></li>
-                                <li><a data-text="Link 04 Clicado!" class="waves-effect" href="#!">Link#04</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-                <ul class="collapsible collapsible-accordion">
-                    <li>
-                        <a class="collapsible-header">Collapsible#02</a>
-                        <div class="collapsible-body">
-                            <ul>
-                                <li><a data-text="Link 05 Clicado!" class="waves-effect" href="#!">Link#05</a></li>
-                                <li><a data-text="Link 06 Clicado!" class="waves-effect" href="#!">Link#06</a></li>
-                                <li><a data-text="Link 07 Clicado!" class="waves-effect" href="#!">Link#07</a></li>
-                                <li><a data-text="Link 08 Clicado!" class="waves-effect" href="#!">Link#08</a></li>
+                                <li data-sidenav-btn data-table="tabulator-table" data-text="Tabela 01" class="active orange lighten-1"><a class="waves-effect" href="#!">Tabela 01</a></li>
+                                <li data-sidenav-btn data-table="tabulator-table02" data-text="Tabela 02"><a class="waves-effect" href="#!">Tabela 02</a></li>
                             </ul>
                         </div>
                     </li>
                 </ul>
             </ul>
-            
         `
         this.createAllinstances()
         this.listenerEventsfromEscope()

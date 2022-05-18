@@ -1,4 +1,4 @@
-class TabulatorTable extends HTMLElement {
+class TabulatorTable02 extends HTMLElement {
     constructor(){
         super()
         this.shadow = this.attachShadow({mode:'open'});
@@ -39,7 +39,7 @@ class TabulatorTable extends HTMLElement {
     
     createCustomEvents(){
         this.sendRowData = new CustomEvent('sendRowData', {detail: {solicitante: this, data: "" }});
-        // this.sendTableToContainer = new CustomEvent('sendTableToContainer', {detail: {solicitante: this}});
+        this.sendTableToContainer = new CustomEvent('sendTableToContainer', {detail: {solicitante: this}});
     }
 
     listenerEventsfromWindow(){
@@ -49,14 +49,14 @@ class TabulatorTable extends HTMLElement {
         // })
 
         window.addEventListener('getTable', e => {
-            if(e.detail.table === 'tabulator-table'){
-                this.shadow.querySelector('#tabulator-table').style.display = 'block'
+            if(e.detail.table === 'tabulator-table02'){
+                this.shadow.querySelector('#tabulator-table02').style.display = 'block'
                 this.table.redraw()
             } else {
-                this.shadow.querySelector('#tabulator-table').style.display = 'none'
-
+                this.shadow.querySelector('#tabulator-table02').style.display = 'none'
             }
         })
+
     }
 
     createAllinstances(){
@@ -78,7 +78,7 @@ class TabulatorTable extends HTMLElement {
                     background-color: none;
                     background: none;
                     border: none;
-                    display: block;
+                    display: none;
                 }
 
                 .tabulator-header {
@@ -91,7 +91,7 @@ class TabulatorTable extends HTMLElement {
                 }
 
                 .tabulator-col {
-                    background: #36304A !important;
+                    background: #b84eba !important;
                     border: none !important;
 
                 }
@@ -101,26 +101,27 @@ class TabulatorTable extends HTMLElement {
                 // }
 
                 .tabulator-footer {
-                    background: #36304A !important;
+                    background: #b84eba !important;
                     border-top: none;
                 }
 
             </style>
-            <div id="tabulator-table"></div>
+            <div id="tabulator-table02"></div>
         `
         this.createAllinstances()
         this.listenerEventsfromEscope()
-        this.createTable(this.shadow)
+        this.createTable()
     }
     
     async getData() {
-        const res = await fetch('../data.json')
+        const res = await fetch('../data02.json')
         const data = await res.json()
-    
         return data
     }
 
-    async createTable() {
+    async createTable(shadowDOM) {
+        const shadow = shadowDOM
+
         const dateFormatterParams = {
             inputFormat: "YYYY-MM-DD",
             outputFormat: "DD/MM/YYYY",
@@ -129,35 +130,29 @@ class TabulatorTable extends HTMLElement {
 
         const options = {
             data: await this.getData(),
-            layout: "fitColumns",
-
-            resizableRows: false,
-            resizableColumn: false,
-
             clipboardCopySelector: "table",
             clipboard: true,
             clipboardCopyStyled: false,
-
             pagination:"local",
             paginationSize: 22,
             paginationSizeSelector: [2, 4, 6, 8, 10],
-            paginationCounter:"rows",
-
             movableColumns: false,
+            paginationCounter:"rows",
+            layout: "fitColumns",
             rowHeight: 100,
             columns: [
-                {title: "Name", field: "name", resizable: false},
-                {title: "City", field: "city", resizable: false},
-                {title: "Country", field: "country", resizable: false},
-                {title: "Age", field: "age", editor: "input", formatter: this.validateAge, resizable: false},
-                {title: "Color", field: "color", resizable: false, editor: "input"},
-                {title: "Created At", field: "created-at", editor: "input", resizable: false, formatter: "datetime", formatterParams: dateFormatterParams},
-                {title: "Legal", field: "legal-age", visible: false, clipboard: true}
+                {title: "Name", field: "name", editor: "input"},
+                {title: "City", field: "city", editor: "input"},
+                {title: "Country", field: "country", editor: "input"},
+                {title: "Age", field: "age", formatter: this.validateAge},
+                {title: "Color", field: "color"},
+                {title: "Created At", field: "created-at", formatter: "datetime", formatterParams: dateFormatterParams},
+                {title: "Legal", field: "legal-age", visible: true}
             ],
             rowDblClick: this.rowDblClick
         }
         
-        this.table = new Tabulator(this.shadow.querySelector('#tabulator-table'), options)
+        this.table = new Tabulator(this.shadow.querySelector('#tabulator-table02'), options)
     }
 
     validateAge(cell, formatterParams, onRendered) {
@@ -180,4 +175,4 @@ class TabulatorTable extends HTMLElement {
     // }
 }
 
-window.customElements.define('tabulator-table', TabulatorTable);
+window.customElements.define('tabulator-table02', TabulatorTable02);

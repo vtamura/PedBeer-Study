@@ -35,7 +35,6 @@ class TopNavbar extends HTMLElement {
     createCustomEvents(){
         this.openLeftMenu = new CustomEvent('openLeftMenu', {detail: {solicitante: this}})
         this.openRightMenu = new CustomEvent('openRightMenu', {detail: {solicitante: this}})
-
     }
     
     createAllinstances(){
@@ -69,9 +68,9 @@ class TopNavbar extends HTMLElement {
     }
     render(){
         this.shadow.innerHTML = `
+            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
             <style>
                 @import "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css";
-                @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
 
                 #menu-left {
                     margin-left: 100px !important;
@@ -98,9 +97,10 @@ class TopNavbar extends HTMLElement {
                 }
 
             </style>
-            
             <nav>
-                <a href="#" id="menu-left" data-target="slide-out" class="sidenav-trigger show-on-large">Menu</i></a>
+                <a href="#" id="menu-left" data-target="slide-out" class="sidenav-trigger show-on-large">
+                    <i class="fa-solid fa-bars"></i>
+                </a>
                 <div class="nav-wrapper grey lighten-5 z-depth-0">
     
                     <a href="#" class="brand-logo">
@@ -127,6 +127,7 @@ class TopNavbar extends HTMLElement {
                         </li>
                     </ul>
                 </div>
+                
             </nav>
 
         `
