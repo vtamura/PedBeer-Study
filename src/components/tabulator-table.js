@@ -111,10 +111,10 @@ class TabulatorTable extends HTMLElement {
     }
 
     async createTable() {
-        const context = this
         const options = {
             data: await this.getData(),
             clipboardCopySelector:"table",
+            clipboard:true,
             pagination:"local",
             paginationSize: 22,
             paginationSizeSelector: [2, 4, 6, 8, 10],
@@ -133,11 +133,13 @@ class TabulatorTable extends HTMLElement {
                     outputFormat: "DD/MM/YYYY",
                     invalidPlaceholder:"(invalid date)"
                 }}
-            ]
+            ],
+            rowDblClick: function(e, row) {
+                console.log(row.getData())
+            }
     }
 
-        this.table = new Tabulator(this.shadow.querySelector('#tabulator-table'), options)
-        console.log(this.table)
+        const table = new Tabulator(this.shadow.querySelector('#tabulator-table'), options)
     }
 
     validateAge(cell, formatterParams, onRendered) {
