@@ -170,8 +170,11 @@ class TabulatorTable extends HTMLElement {
     }
 
     rowDblClick(e, row) {
-        const sendRowData = new CustomEvent('sendRowData', {detail: {solicitante: this, data: row.getData() }});
+        const sendRowData = new CustomEvent('sendRowData', {detail: {solicitante: this, data: row.getTable() }});
         window.dispatchEvent(sendRowData)
+
+        // var elems = document.querySelectorAll('.modal'); Criar instancia modal
+        // var instances = M.Modal.init(elems, options);
     }
 
     // downloadTable(data) {

@@ -8,30 +8,38 @@ class TopNavbar extends HTMLElement {
      static get observedAttributes() {
         return [];
      }
+
     /*get propriedade(){
         return this.getAttribute('atributo');
     }*/
+
     /*set propriedade(valor){
             this.setAttribute('atributo',valor);
     }*/
+
     static get observedAttributes(){
         return []
     }
+
     connectedCallback(){
        this.render()
     }
+
     adoptedCallback() {
         console.log('o componente foi adotado por outro componenten parent')
-     }
+    }
+
     disconnectedCallback() {
         console.log('o componente foi removido DOM');
-     }
+    }
+
     attributeChangedCallback(name, oldVal, newVal) {
         /* if (oldVal !== newVal) {
         console.log('name changed from oldVal to newVal')
      } */
         this.render()
     }
+
     createCustomEvents(){
         this.openLeftMenu = new CustomEvent('openLeftMenu', {detail: {solicitante: this}})
         this.openRightMenu = new CustomEvent('openRightMenu', {detail: {solicitante: this}})
@@ -66,6 +74,7 @@ class TopNavbar extends HTMLElement {
         })
 
     }
+    
     render(){
         this.shadow.innerHTML = `
             <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">

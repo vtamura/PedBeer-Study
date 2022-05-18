@@ -1,4 +1,4 @@
-class rowDataToast extends HTMLElement {
+class rowModal extends HTMLElement {
     constructor(){
         super()
         this.shadow = this.attachShadow({mode:'open'});
@@ -71,9 +71,22 @@ class rowDataToast extends HTMLElement {
         //idcomponente.addEventListener('click',function(){window.dispatchEvent(context.nomeDoEventoCustomizado);})
     }
     render(){
+        this.shadow.innerHTML = `
+            <div id="modal1" class="modal">
+                <div class="modal-content">
+                    <h4>Modal Header</h4>
+                    <p>A bunch of text</p>
+                </div>
+                    <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+                </div>
+            </div>
+        
+        `
+
         this.createAllinstances()
         this.listenerEventsfromEscope()
     }
 }
 
-window.customElements.define('row-data-toast', rowDataToast);
+window.customElements.define('row-modal', rowModal);

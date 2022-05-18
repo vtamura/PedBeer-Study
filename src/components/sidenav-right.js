@@ -72,6 +72,8 @@ class SidenavRight extends HTMLElement {
                         <form action="#">
                         </form>
                     </div>
+                <li><a class="subheader">Excel</a></li>
+                <li><a class="waves-effect" href="#!">Exportar Excel</a></li>
             </ul>
         `
 
