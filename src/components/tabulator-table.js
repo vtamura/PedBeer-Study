@@ -38,7 +38,6 @@ class TabulatorTable extends HTMLElement {
     }
     
     createCustomEvents(){
-        this.sendRowData = new CustomEvent('sendRowData', {detail: {solicitante: this, data: "" }});
         // this.sendTableToContainer = new CustomEvent('sendTableToContainer', {detail: {solicitante: this}});
     }
 
@@ -135,8 +134,8 @@ class TabulatorTable extends HTMLElement {
             resizableColumn: false,
 
             clipboardCopySelector: "table",
-            clipboard: true,
-            clipboardCopyStyled: false,
+            clipboard: "copy",
+            clipboardCopyStyled: true,
 
             pagination:"local",
             paginationSize: 22,
@@ -170,11 +169,9 @@ class TabulatorTable extends HTMLElement {
     }
 
     rowDblClick(e, row) {
-        const sendRowData = new CustomEvent('sendRowData', {detail: {solicitante: this, data: row.getTable() }});
-        window.dispatchEvent(sendRowData)
+        const sendTableData = new CustomEvent('sendTableData', {detail: {solicitante: this, data: row.getTable().getData() }});
+        window.dispatchEvent(sendTableData)
 
-        // var elems = document.querySelectorAll('.modal'); Criar instancia modal
-        // var instances = M.Modal.init(elems, options);
     }
 
     // downloadTable(data) {

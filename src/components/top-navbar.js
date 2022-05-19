@@ -77,16 +77,12 @@ class TopNavbar extends HTMLElement {
     
     render(){
         this.shadow.innerHTML = `
-            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
             <style>
                 @import "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css";
-
-                #menu-left {
-                    margin-left: 100px !important;
-                }
+                @import "https://pro.fontawesome.com/releases/v5.10.0/css/all.css";
 
                 .nav-wrapper {
-                    padding-left: 200px;
+                    padding: 0 200px;
                 }
                 
                 .sidenav-trigger {
@@ -107,31 +103,22 @@ class TopNavbar extends HTMLElement {
 
             </style>
             <nav>
-                <a href="#" id="menu-left" data-target="slide-out" class="sidenav-trigger show-on-large">
-                    <i class="fa-solid fa-bars"></i>
-                </a>
                 <div class="nav-wrapper grey lighten-5 z-depth-0">
+                    <a href="#" id="menu-left" data-target="slide-out" class="sidenav-trigger show-on-large">
+                        <i class="fas fa-bars"></i>
+                    </a>
     
-                    <a href="#" class="brand-logo">
+                    <a href="#" class="brand-logo center">
                         <span class="orange-text">Ped / </span><span class="black-text">Beer</span>
                     </a>
+
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
                         <li>
                             <a><span data-title class="badge orange">Bem vindo ao PedBeer</span></a>
                         </li>
                         <li>
-                            <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large">
-                                Link#01
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large">
-                                Link#02
-                            </a>
-                        </li>
-                        <li>
                             <a href="#" id="menu-right" data-target="slide-out" class="sidenav-trigger show-on-large">
-                                Menu-Right
+                                <i class="fas fa-cog"></i>
                             </a>
                         </li>
                     </ul>

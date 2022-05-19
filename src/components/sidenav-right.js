@@ -82,11 +82,20 @@ class SidenavRight extends HTMLElement {
         this.renderCheckBoxes()
     }
 
+    errorHandler(err, errorMessage) {
+        throw new Error(err.code, errorMessage)
+    }
+
     async getData() {
-        const res = await fetch('../data.json')
-        const data = await res.json()
-    
-        return data
+        try {
+            const res = await fetch('../data.json')
+            const data = await res.json()
+        
+            return data
+        }
+        catch(error) {
+            this.errorHandler(error, 'Erro ao buscar dados.')
+        }
     }
 
     async getColumnTitle() {
@@ -103,8 +112,6 @@ class SidenavRight extends HTMLElement {
     async renderCheckBoxes() {
         const headers = await this.getColumnTitle()
         const form = this.shadow.querySelector('form')
-        
-        console.log(headers)
         
         headers.forEach(option => {
             let p = document.createElement('p')
