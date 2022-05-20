@@ -42,10 +42,6 @@ class TabulatorTable extends HTMLElement {
     }
 
     listenerEventsfromWindow(){
-        // window.addEventListener('downloadTable', () => {
-        //     console.log('Copiado!')
-        //     this.table.copyToClipboard("table", true);
-        // })
 
         window.addEventListener('getTable', e => {
             if(e.detail.table === 'tabulator-table'){
@@ -55,6 +51,16 @@ class TabulatorTable extends HTMLElement {
                 this.shadow.querySelector('#tabulator-table').style.display = 'none'
 
             }
+        })
+
+        window.addEventListener('exportExcel', e => {
+            this.table.copyToClipboard('active')
+            console.log('Copiado!')
+        })
+
+        window.addEventListener('toggleColumn', e => {
+            console.log(e.detail.column)
+            this.table.toggleColumn(e.detail.column)
         })
     }
 
@@ -151,7 +157,7 @@ class TabulatorTable extends HTMLElement {
                 {title: "Age", field: "age", editor: "input", formatter: this.validateAge, resizable: false},
                 {title: "Color", field: "color", resizable: false, editor: "input"},
                 {title: "Created At", field: "created-at", editor: "input", resizable: false, formatter: "datetime", formatterParams: dateFormatterParams},
-                {title: "Legal", field: "legal-age", visible: false, clipboard: true}
+                {title: "Legal", field: "legal-age", clipboard: true}
             ],
             rowDblClick: this.rowDblClick
         }
@@ -171,7 +177,6 @@ class TabulatorTable extends HTMLElement {
     rowDblClick(e, row) {
         const sendTableData = new CustomEvent('sendTableData', {detail: {solicitante: this, data: row.getTable().getData() }});
         window.dispatchEvent(sendTableData)
-
     }
 
     // downloadTable(data) {

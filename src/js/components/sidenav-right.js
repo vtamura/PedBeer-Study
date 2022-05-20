@@ -40,7 +40,8 @@ class SidenavRight extends HTMLElement {
     }
 
     createCustomEvents(){
-        // this.downloadTable = new CustomEvent('downloadTable', {detail: {solicitante: this}})
+        this.exportExcel = new CustomEvent('exportExcel', {detail: {solicitante: this}})
+        this.toggleColumn = new CustomEvent('toggleColumn', {detail: {solicitante: this, column: ''}})
     }
 
     listenerEventsfromWindow(){
@@ -49,16 +50,17 @@ class SidenavRight extends HTMLElement {
             this.sidenavInstance.open()
         })
     }
+
     createAllinstances(){
         const rightSidenav = this.shadow.querySelector('.sidenav')
         this.sidenavInstance = M.Sidenav.init(rightSidenav, {edge: 'right'})
     }
 
     listenerEventsfromEscope(){
-        // const downloadBtn = this.shadow.querySelector('[data-download]')
-        // downloadBtn.addEventListener('click', e => {
-        //     window.dispatchEvent(this.downloadTable)
-        // })
+        const excelBtn = this.shadow.querySelector('[data-excel]')
+        excelBtn.addEventListener('click', e => {
+            window.dispatchEvent(this.exportExcel)
+        })
     }
 
     async render(){
@@ -73,7 +75,7 @@ class SidenavRight extends HTMLElement {
                         </form>
                     </div>
                 <li><a class="subheader">Excel</a></li>
-                <li><a class="waves-effect" href="#!">Exportar Excel</a></li>
+                <li><a data-excel class="waves-effect" href="#!">Exportar Excel</a></li>
             </ul>
         `
 
@@ -115,12 +117,19 @@ class SidenavRight extends HTMLElement {
         
         headers.forEach(option => {
             let p = document.createElement('p')
+            p.setAttribute('data-name', option)
             p.innerHTML = `
                             <label>
                                 <input type="checkbox" checked="checked"/>
                                 <span>${option}</span>
                             </label>
                         `
+            let checkbox = p.querySelector('[type="checkbox"]')
+
+            checkbox.addEventListener('click', e => {
+                this.toggleColumn.detail.column = p.getAttribute('data-name')
+                window.dispatchEvent(this.toggleColumn)
+            })
             form.appendChild(p)
         })
     }
